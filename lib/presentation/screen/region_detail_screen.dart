@@ -1,0 +1,127 @@
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:auto_route/auto_route.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:pokedex/domain/model/pokedex_id_range.dart';
+import 'package:pokedex/domain/model/region_type.dart';
+import 'package:pokedex/gen/assets.gen.dart';
+import 'package:pokedex/presentation/components/pokemon_card_view.dart';
+import 'package:pokedex/presentation/components/pokemon_list_error_view.dart';
+import 'package:pokedex/presentation/theme/common_colors.dart';
+import 'package:pokedex/presentation/viewmodel/pokemon_list_view_model.dart';
+
+@RoutePage()
+class RegionDetailScreen extends HookConsumerWidget {
+  const RegionDetailScreen({
+    super.key,
+    required this.regionType,
+  });
+
+  final RegionType regionType;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final pokedexIdRange = PokedexIdRange(
+        start: regionType.startPokedexId, end: regionType.endPokedexId);
+
+    final provider = pokemonListViewModelProvider(pokedexIdRange);
+    final state = ref.watch(provider);
+    final list = state.list;
+    final needLoadMore = !state.isEndOfList && list.isNotEmpty;
+
+    final controller = useScrollController();
+
+    useEffect(() {
+      controller.addListener(() {
+        if (controller.position.pixels >=
+            controller.position.maxScrollExtent - 100) {
+          ref
+              .read(pokemonListViewModelProvider(pokedexIdRange).notifier)
+              .loadMore();
+        }
+      });
+      return null;
+    }, []);
+
+    return Scaffold(
+      appBar: AppBar(
+        scrolledUnderElevation: 0,
+        backgroundColor: Colors.transparent,
+        toolbarHeight: 80,
+        leadingWidth: 48,
+        leading: Container(
+          margin: const EdgeInsets.only(left: 16),
+          child: GestureDetector(
+            onTap: () => context.router.back(),
+            child: SvgPicture.asset(
+              Assets.icons.iconArrowLeft2,
+              width: 32,
+              height: 32,
+            ),
+          ),
+        ),
+        titleSpacing: 22,
+        title: Text(
+          regionType.name,
+          style: Theme.of(context).textTheme.headlineLarge,
+        ),
+        centerTitle: false,
+      ),
+      body: Column(
+        children: [
+          const Divider(
+            height: 1,
+            color: Black50,
+          ),
+          Flexible(
+            child: AnimatedSwitcher(
+              duration: const Duration(milliseconds: 500),
+              child: list.isEmpty
+                  ? state.error != null
+                      ? Center(
+                          key: const ValueKey('error'),
+                          child: PokemonListErrorView(
+                            message: state.error!,
+                            onRetry: () =>
+                                ref.read(provider.notifier).loadMore(),
+                          ),
+                        )
+                      : const Center(
+                          key: ValueKey("loading"),
+                          child: CircularProgressIndicator(),
+                        )
+                  : ListView.builder(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      key: const ValueKey("loaded"),
+                      controller: controller,
+                      itemCount: list.length + (needLoadMore ? 1 : 0),
+                      itemBuilder: (context, index) {
+                        if (index == list.length) {
+                          return state.error != null
+                              ? PokemonListErrorView(
+                                  message: state.error!,
+                                  onRetry: () =>
+                                      ref.read(provider.notifier).loadMore(),
+                                )
+                              : const SizedBox(
+                                  height: 90,
+                                  child: Center(
+                                    child: SizedBox(
+                                        width: 30,
+                                        height: 30,
+                                        child: CircularProgressIndicator()),
+                                  ),
+                                );
+                        } else {
+                          return PokemonCardView.medium(info: list[index]);
+                        }
+                      },
+                    ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}

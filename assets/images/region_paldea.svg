@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 300" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#5279a8"/>
+      <stop offset="1" stop-color="#f4ba72"/>
+    </linearGradient>
+    <linearGradient id="land" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#9aab65"/>
+      <stop offset="1" stop-color="#536c49"/>
+    </linearGradient>
+    <linearGradient id="road" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#e9d1a0"/>
+      <stop offset="1" stop-color="#b78c69"/>
+    </linearGradient>
+  </defs>
+  <path fill="url(#sky)" d="M0 0h1200v300H0z"/>
+  <circle cx="882" cy="75" r="47" fill="#ffe5a0" opacity=".82"/>
+  <path fill="#788e9a" d="m0 153 115-94 74 63 113-88 119 116 127-83 96 76 116-96 105 87 106-79 118 98v147H0z"/>
+  <path fill="#c2b489" d="m0 194 140-89 88 70 121-93 141 104 137-86 93 72 112-83 132 92 108-80 128 79v120H0z"/>
+  <path fill="url(#land)" d="M0 208c130-49 242 15 372-21 112-31 180-21 285 16 103 37 192-20 310-4 103 13 157 53 233 20v81H0z"/>
+  <path fill="#526e4c" d="M0 256c135-35 227 9 352-4 139-14 209-35 323-8 121 29 227-7 337 1 76 6 134 19 188 5v50H0z"/>
+  <path fill="none" stroke="url(#road)" stroke-width="30" stroke-linecap="round" d="M390 307c27-58 106-72 199-49 68 17 123 8 149-24 34-42 96-51 157-24 44 20 90 22 153 2"/>
+  <path fill="none" stroke="#f1dfb8" stroke-width="3" stroke-dasharray="14 15" d="M390 307c27-58 106-72 199-49 68 17 123 8 149-24 34-42 96-51 157-24 44 20 90 22 153 2"/>
+  <g fill="#735b50">
+    <path d="M785 187h53v48h-53zM848 169h62v66h-62zM919 192h44v43h-44z"/>
+    <path d="m775 187 36-28 38 28zm65-18 39-31 44 31zm74 23 28-22 36 22z" fill="#d78e66"/>
+  </g>
+  <g fill="#526e4c">
+    <path d="M730 229h12v-43h-12zm-16-43 22-30 22 30z"/>
+    <path d="M1000 229h12v-52h-12zm-17-52 23-34 23 34z"/>
+  </g>
+  <path fill="#e9cd8f" opacity=".7" d="M0 0h1200v300H0z"/>
+</svg>

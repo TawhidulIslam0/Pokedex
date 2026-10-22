@@ -1,0 +1,35 @@
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:pokedex/domain/model/pokemon_evolution_chain_info.dart';
+import 'package:pokedex/domain/model/pokemon_info.dart';
+import 'package:pokedex/domain/model/pokemon_type.dart';
+
+part 'pokemon_detail_info.freezed.dart';
+
+@freezed
+class PokemonDetailInfo with _$PokemonDetailInfo {
+  factory PokemonDetailInfo({
+    required int pokedexId,
+    required String name,
+    required String speciesName,
+    required String imageUrl,
+    required String shinyImageUrl,
+    required List<PokemonType> types,
+    required List<PokemonType> weaknesses,
+    required List<PokemonType> strengths,
+    required String desc,
+    required String category,
+    required double height,
+    required double weight,
+    required List<String> abilities,
+    required List<PokemonBaseStatInfo> baseStats,
+    required List<PokemonMoveInfo> levelUpMoves,
+    required List<PokemonMoveInfo> machineMoves,
+    required List<PokemonMoveInfo> eggMoves,
+    PokemonEvolutionChainInfo? evolutionChainInfo,
+    double? genderRate,
+  }) = _PokemonDetailInfo;
+}
+
+extension PokemonDetailInfoExt on PokemonDetailInfo {
+  PokemonType get mainType => types.first;
+}
